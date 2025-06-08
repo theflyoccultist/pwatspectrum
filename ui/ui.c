@@ -7,7 +7,7 @@
 
 #include "ui.h"
 
-UI *init_ui(int win_height, int win_width) {
+UI *init_ui() {
   UI *window = malloc(sizeof(UI));
   if (!window)
     return NULL;
@@ -31,7 +31,8 @@ UI *init_ui(int win_height, int win_width) {
   init_pair(1, COLOR_GREEN, COLOR_BLUE);
   init_pair(2, COLOR_BLACK, COLOR_GREEN);
 
-  window->win = newwin(win_height, win_width, 0, 0);
+  getmaxyx(stdscr, window->max_y, window->max_x);
+  window->win = newwin(window->max_y, window->max_x, 0, 0);
   if (!window->win) {
     fprintf(stderr, "init_ui : newwin() failed");
     window->error = 2;
@@ -40,7 +41,7 @@ UI *init_ui(int win_height, int win_width) {
   return window;
 }
 
-int render_ui(UI *window, int win_height, int win_width) {
+int render_ui(UI *window) {
   if (!window || !window->win)
     return -1;
 
@@ -53,16 +54,16 @@ int render_ui(UI *window, int win_height, int win_width) {
   // Title position, near the top, but below the border
   wattron(window->win, COLOR_PAIR(1));
   int msg_y = 1;
-  int msg_x = (win_width - len) / 2;
+  int msg_x = (window->max_x - len) / 2;
   mvwprintw(window->win, msg_y, msg_x, "%s", msg);
   wattroff(window->win, COLOR_PAIR(1));
 
   // bar area, avoid title and borders
   int bar_top = msg_y + 2;
-  int bar_bottom = win_height - 2;
+  int bar_bottom = window->max_y - 2;
   int bar_height = bar_bottom - bar_top;
 
-  int bar_width = win_width - 2;
+  int bar_width = window->max_x - 2;
   int num_bars = bar_width;
 
   wattron(window->win, COLOR_PAIR(2));

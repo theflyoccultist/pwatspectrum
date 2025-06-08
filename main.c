@@ -2,13 +2,13 @@
 #include <stdio.h>
 
 int main() {
-  UI *ui = init_ui(35, 50);
+  UI *ui = init_ui();
   if (!ui || ui->error) {
     fprintf(stderr, "Failed to initialize UI\n");
     return 1;
   }
 
-  render_ui(ui, 35, 50);
+  render_ui(ui);
   free_ui(ui);
 
   return 0;

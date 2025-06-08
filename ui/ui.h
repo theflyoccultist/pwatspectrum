@@ -4,12 +4,14 @@
 #include <curses.h>
 
 typedef struct {
+  int max_y;
+  int max_x;
   WINDOW *win;
   int error;
 } UI;
 
-UI *init_ui(int win_height, int win_width);
-int render_ui(UI *window, int win_height, int win_width);
+UI *init_ui();
+int render_ui(UI *window);
 void free_ui(UI *window);
 
 #endif // !UI_H
