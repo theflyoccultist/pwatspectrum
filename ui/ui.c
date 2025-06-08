@@ -29,7 +29,7 @@ UI *init_ui() {
 
   start_color();
   init_pair(1, COLOR_GREEN, COLOR_BLUE);
-  init_pair(2, COLOR_BLACK, COLOR_GREEN);
+  init_pair(2, COLOR_RED, COLOR_GREEN);
 
   getmaxyx(stdscr, window->max_y, window->max_x);
   window->win = newwin(window->max_y, window->max_x, 0, 0);
@@ -78,7 +78,6 @@ int render_ui(UI *window) {
   wattroff(window->win, COLOR_PAIR(2));
 
   wrefresh(window->win);
-  getch();
 
   return 0;
 }
