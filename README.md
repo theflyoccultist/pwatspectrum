@@ -18,7 +18,7 @@ Binds those three libraries together so that the spectrogram can be displayed to
 
 ![Preview](preview.png)
 
-Simply compile with `make`, run the compiled binary on your terminal while playing some music or other forms of audio from your computer.
+Simply compile with `make`, run the compiled binary on your terminal while playing some music or other forms of audio from your computer. You can run `make clean` if you want to delete the binaries automatically.
 
 You will probably need to install those libraries so it runs on your machine:
 
