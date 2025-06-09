@@ -45,6 +45,7 @@ int main() {
     int bar_height = ui->max_y - 2;
     int total_width = ui->max_x - 2;
     int max_bins = BUFFER_SIZE / 2;
+    static int prev_heights[BUFFER_SIZE / 2] = {0};
 
     for (int i = 1; i < total_width && i < max_bins; ++i) {
       double real = fft->output[i][0];
@@ -54,9 +55,18 @@ int main() {
       if (magnitude > 1.0)
         magnitude = 1.0;
 
-      int height = (int)(magnitude * bar_height);
+      int target_height = (int)(magnitude * bar_height);
 
-      for (int y = 0; y < height; ++y) {
+      // Apply decay
+      if (target_height >= prev_heights[i]) {
+        prev_heights[i] = target_height;
+      } else {
+        prev_heights[i] -= 3; // change decay here
+        if (prev_heights[i] < 0)
+          prev_heights[i] = 0;
+      }
+
+      for (int y = 0; y < prev_heights[i]; ++y) {
         wattron(ui->win, COLOR_PAIR(1));
         mvwprintw(ui->win, bar_height - y, i + 1, "|");
         wattroff(ui->win, COLOR_PAIR(1));
@@ -64,7 +74,7 @@ int main() {
     }
 
     wrefresh(ui->win);
-    usleep(50000);
+    usleep(8000); // tweak this for refresh rate
   }
 
   destroy_fft(fft);
