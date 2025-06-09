@@ -19,6 +19,7 @@ UI *init_ui() {
   cbreak();
   noecho();
   curs_set(FALSE);
+  nodelay(stdscr, TRUE);
 
   if (!has_colors()) {
     endwin();
@@ -39,47 +40,6 @@ UI *init_ui() {
   }
 
   return window;
-}
-
-int render_ui(UI *window) {
-  if (!window || !window->win)
-    return -1;
-
-  char *msg = "Audio Visualizer";
-  int len = strlen(msg);
-
-  box(window->win, 0, 0);
-  refresh();
-
-  // Title position, near the top, but below the border
-  wattron(window->win, COLOR_PAIR(1));
-  int msg_y = 1;
-  int msg_x = (window->max_x - len) / 2;
-  mvwprintw(window->win, msg_y, msg_x, "%s", msg);
-  wattroff(window->win, COLOR_PAIR(1));
-
-  // bar area, avoid title and borders
-  int bar_top = msg_y + 2;
-  int bar_bottom = window->max_y - 2;
-  int bar_height = bar_bottom - bar_top;
-
-  int bar_width = window->max_x - 2;
-  int num_bars = bar_width;
-
-  wattron(window->win, COLOR_PAIR(2));
-  for (int i = 0; i < num_bars; ++i) {
-    int bar_val = rand() % bar_height; // fake value
-    for (int j = 0; j < bar_val; ++j) {
-      int y = bar_bottom - j; // draw upward
-      int x = i + 1;          // offset from left border
-      mvwprintw(window->win, y, x, ".");
-    }
-  }
-  wattroff(window->win, COLOR_PAIR(2));
-
-  wrefresh(window->win);
-
-  return 0;
 }
 
 void free_ui(UI *window) {

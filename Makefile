@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Iinclude
-LDFLAGS=-lncurses -lpulse-simple -lpulse
+LDFLAGS=-lncurses -lpulse-simple -lpulse -lfftw3 -lm
 
-SRCS=main.c sound/audio.c ui/ui.c
+SRCS=main.c sound/audio.c ui/ui.c processing/processing.c
 OBJ=$(SRCS:.c=.o)
 OBJ_BUILD=$(addprefix build/,$(notdir $(OBJ)))
 BIN=audio_visualizer
@@ -19,6 +19,9 @@ build/%.o: sound/%.c | build
 	$(CC) $(CFLAGS) -c $< -o $@
 
 build/%.o: ui/%.c | build
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/%.o: processing/%.c | build
 	$(CC) $(CFLAGS) -c $< -o $@
 
 build:

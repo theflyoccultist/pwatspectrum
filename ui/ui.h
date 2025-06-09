@@ -11,7 +11,6 @@ typedef struct {
 } UI;
 
 UI *init_ui();
-int render_ui(UI *window);
 void free_ui(UI *window);
 
 #endif // !UI_H

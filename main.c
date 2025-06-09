@@ -1,8 +1,14 @@
-// #include "sound/audio.h"
+#include "processing/processing.h"
+#include "sound/audio.h"
 #include "ui/ui.h"
 
 #include <curses.h>
+#include <math.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 1024
 
 int main() {
   UI *ui = init_ui();
@@ -11,14 +17,58 @@ int main() {
     return 1;
   }
 
-  render_ui(ui);
+  AudioInput *audio = init_audio();
+  if (!audio || audio->error) {
+    fprintf(stderr, "Failed to initialize audio\n");
+    return 1;
+  }
+  int16_t samples[BUFFER_SIZE];
 
-  int c;
-  while ((c = getch()) != 'q') {
-    if (c == 114)
-      printw("r pressed!\n");
+  FFTData *fft = init_fft(BUFFER_SIZE);
+  if (!fft) {
+    fprintf(stderr, "Failed to initialize FFT\n");
+    return 1;
   }
 
+  while (1) {
+    int ch = getch();
+    if (ch == 'q')
+      break;
+
+    read_audio(audio, samples, BUFFER_SIZE);
+    // printf("First sample: %d\n", samples[0]);
+    apply_fft(fft, samples);
+
+    werase(ui->win);
+    box(ui->win, 0, 0);
+
+    int bar_height = ui->max_y - 2;
+    int total_width = ui->max_x - 2;
+    int max_bins = BUFFER_SIZE / 2;
+
+    for (int i = 1; i < total_width && i < max_bins; ++i) {
+      double real = fft->output[i][0];
+      double imag = fft->output[i][1];
+      double magnitude = sqrt(real * real + imag * imag);
+      magnitude = log10(magnitude + 1);
+      if (magnitude > 1.0)
+        magnitude = 1.0;
+
+      int height = (int)(magnitude * bar_height);
+
+      for (int y = 0; y < height; ++y) {
+        wattron(ui->win, COLOR_PAIR(1));
+        mvwprintw(ui->win, bar_height - y, i + 1, "|");
+        wattroff(ui->win, COLOR_PAIR(1));
+      }
+    }
+
+    wrefresh(ui->win);
+    usleep(50000);
+  }
+
+  destroy_fft(fft);
+  free_audio(audio);
   free_ui(ui);
 
   return 0;
