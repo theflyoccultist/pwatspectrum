@@ -29,8 +29,9 @@ UI *init_ui() {
   }
 
   start_color();
-  init_pair(1, COLOR_GREEN, COLOR_BLUE);
-  init_pair(2, COLOR_RED, COLOR_GREEN);
+  init_pair(1, COLOR_GREEN, COLOR_BLACK);
+  init_pair(2, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(3, COLOR_RED, COLOR_BLACK);
 
   getmaxyx(stdscr, window->max_y, window->max_x);
   window->win = newwin(window->max_y, window->max_x, 0, 0);

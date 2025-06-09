@@ -67,9 +67,12 @@ int main() {
       }
 
       for (int y = 0; y < prev_heights[i]; ++y) {
-        wattron(ui->win, COLOR_PAIR(1));
+        int color_index = 1 + (y * 3) / bar_height;
+        color_index = (color_index > 3) ? 3 : color_index;
+
+        wattron(ui->win, COLOR_PAIR(color_index));
         mvwprintw(ui->win, bar_height - y, i + 1, "|");
-        wattroff(ui->win, COLOR_PAIR(1));
+        wattroff(ui->win, COLOR_PAIR(color_index));
       }
     }
 
