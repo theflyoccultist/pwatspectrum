@@ -29,7 +29,7 @@ AudioInput *init_audio() {
       .rate = 44100,
   };
 
-  const char *device = "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor";
+  const char *device = getenv("AUDIO_MONITOR_SOURCE");
   audio->stream = pa_simple_new(NULL, "rec", PA_STREAM_RECORD, device, "Record",
                                 &ss, NULL, NULL, &audio->error);
   if (!audio->stream) {
