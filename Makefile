@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Iinclude
+CFLAGS=-g -O0 -Wall -Wextra -fsanitize=address -Iinclude
 LDFLAGS=-lncurses -lpulse-simple -lpulse -lfftw3 -lm
 
 SRCS=main.c sound/audio.c ui/ui.c processing/processing.c

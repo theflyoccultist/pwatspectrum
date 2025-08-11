@@ -1,10 +1,3 @@
-// What i tried making:
-// use the pulseaudio api to visualize music. at the moment, i want it to grab
-// an audio input from a microphone
-// testing:
-// ./myaudio > test.raw
-// aplay -f S16_LE -r 44100 -c 1 test.raw
-
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
