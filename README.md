@@ -1,6 +1,6 @@
 # PwatSpectrum
 
-PwatSpectrum is a real-time terminal audio visualizer powered by ncurses, PulseAudio, FFTW and caffeine. Written in C, it is inspired by the 2000s club nights. It is very performant, looks hot, and usually does not leak memory.
+PwatSpectrum is a simple terminal audio visualizer powered by ncurses, PulseAudio, FFTW and caffeine. Written in C, it is inspired by the 2000s club nights. It is very performant, looks hot, and probably does not leak memory.
 
 - `ui` folder:
 Contains all the setup for the ncurses library, including window initialization and color setup.
@@ -18,16 +18,20 @@ Binds those three libraries together so that the spectrogram can be displayed to
 
 ![Preview](preview.png)
 
-Simply compile with `make`, then execute the program by typing `bash launcher.sh` (it is a shell script that automatically detects your audio device). 
+## Usage Instructions:
 
-You can run `make clean` if you want to delete the binaries automatically.
+- Compile with `make` 
 
-You will probably need to install those libraries so it runs on your machine:
+- Start the program on your terminal with `./launcher.sh`. It is a wrapper script that detects if you're using either `pacmd` or `pactl` for your audio device.
+
+You can run `make clean` if you run into issues and need to recompile.
+
+You will need to install those libraries if they are missing:
 
 ```sh
 sudo apt-get install libncurses-dev libpulse-dev
 ```
 
-The FFTW library present in the apt package manager is outdated, so you would have to build `fftw-3.3.10.tar.gz` from source to get a more recent version. You would have to unzip the archive and run `make install`.
+The FFTW library present in the apt package manager is outdated, so you would have to find and  build `fftw-3.3.10.tar.gz` or later.
 
 As someone who was very much into music and sound engineering before moving to programming, this kind of project was bound to happen. There will be more audio related projects to come.
